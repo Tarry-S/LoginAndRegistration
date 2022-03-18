@@ -4,8 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import com.backendless.Backendless
+import com.backendless.BackendlessUser
+import com.backendless.async.callback.AsyncCallback
+import com.backendless.exceptions.BackendlessFault
 import com.mistershorr.birthdaytracker.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -18,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
         // keys for the key-value pairs for the intent extras
         val EXTRA_USERNAME = "username"
         val EXTRA_PASSWORD = "password"
+        val TAG = "tag"
     }
 
     // starting an activity for a result
@@ -40,8 +47,37 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Backendless.initApp( this, "https://sheentrouble.backendless.app" );
 
+
+
+        binding.buttonLoginLogin.setOnClickListener {
+            val username = binding.editTextLoginUsername.text.toString()
+            val password = binding.editTextLoginPassword.text.toString()
+
+            Backendless.UserService.login(
+                username,
+                password,
+                object : AsyncCallback<BackendlessUser?>{
+                    override fun handleResponse(user: BackendlessUser?) {
+                        Log.d(TAG, "handleResponse: ${user?.email}")
+                        Toast.makeText(this@LoginActivity,
+                            "${user?.getProperty("username")} has been logged in",
+                        Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun handleFault(fault: BackendlessFault) {
+                        Log.d(TAG, "handleFault: ${fault.message}")
+                        Toast.makeText(this@LoginActivity,
+                            "failed",
+                        Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+            )
+        }
         binding.textViewLoginCreateAccount.setOnClickListener {
+
             // launch the registration activity
             // pass the values of username and password along to the new activity
             // 1. extract any information you might need from edit texts
