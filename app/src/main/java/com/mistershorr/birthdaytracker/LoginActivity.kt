@@ -64,6 +64,13 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this@LoginActivity,
                             "${user?.getProperty("username")} has been logged in",
                         Toast.LENGTH_SHORT).show()
+
+                        //launch the birthday list activity
+                        val birthdaylistIntent = Intent(this@LoginActivity, BirthdayListActivity::class.java )
+                        startActivity(birthdaylistIntent)
+                        finish()
+
+                        //finish this activity
                     }
 
                     override fun handleFault(fault: BackendlessFault) {

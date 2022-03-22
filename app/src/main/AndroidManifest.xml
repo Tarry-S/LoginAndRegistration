@@ -12,12 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginAndRegistration">
+
+        <activity
+            android:name="com.mistershorr.birthdaytracker.BirthdayDetailActivity"
+            android:exported="true"/>
+        <activity
+                android:name="com.mistershorr.birthdaytracker.BirthdayListActivity"
+                android:exported="true" />
         <activity
             android:name="com.mistershorr.birthdaytracker.RegistrationActivity"
             android:exported="true" />
         <activity
             android:name="com.mistershorr.birthdaytracker.LoginActivity"
-            android:exported="true">
+            android:exported="true" >
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
